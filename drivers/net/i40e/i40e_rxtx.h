@@ -211,6 +211,8 @@ uint32_t i40e_dev_rx_queue_count(struct rte_eth_dev *dev,
 				 uint16_t rx_queue_id);
 int i40e_dev_rx_descriptor_done(void *rx_queue, uint16_t offset);
 int i40e_dev_rx_descriptor_status(void *rx_queue, uint16_t offset);
+uint32_t i40e_dev_tx_queue_count(struct rte_eth_dev *dev, 
+				 uint16_t tx_queue_id);
 int i40e_dev_tx_descriptor_status(void *tx_queue, uint16_t offset);
 
 uint16_t i40e_recv_pkts_vec(void *rx_queue, struct rte_mbuf **rx_pkts,

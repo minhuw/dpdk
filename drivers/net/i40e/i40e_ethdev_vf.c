@@ -201,6 +201,7 @@ static const struct eth_dev_ops i40evf_eth_dev_ops = {
 	.tx_queue_setup       = i40e_dev_tx_queue_setup,
 	.tx_queue_release     = i40e_dev_tx_queue_release,
 	.rx_queue_count       = i40e_dev_rx_queue_count,
+	.tx_queue_count       = i40e_dev_tx_queue_count,
 	.rxq_info_get         = i40e_rxq_info_get,
 	.txq_info_get         = i40e_txq_info_get,
 	.mac_addr_add	      = i40evf_add_mac_addr,
