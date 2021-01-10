@@ -796,6 +796,7 @@ const struct eth_dev_ops mlx5_dev_ops = {
 	.rx_descriptor_status = mlx5_rx_descriptor_status,
 	.tx_descriptor_status = mlx5_tx_descriptor_status,
 	.rx_queue_count = mlx5_rx_queue_count,
+	.tx_queue_count = mlx5_tx_queue_count,
 	.rx_queue_intr_enable = mlx5_rx_intr_enable,
 	.rx_queue_intr_disable = mlx5_rx_intr_disable,
 	.is_removed = mlx5_is_removed,

@@ -416,6 +416,16 @@ mlx5_tx_descriptor_status(void *tx_queue, uint16_t offset)
 	return RTE_ETH_TX_DESC_DONE;
 }
 
+static uint32_t 
+tx_queue_count(struct mlx5_txq_data *txq)
+{
+	uint32_t used;
+
+	mlx5_tx_complete(txq);
+	used = txq->elts_head - txq->elts_tail;
+	return used;
+}
+
 /**
  * Internal function to compute the number of used descriptors in an RX queue
  *
@@ -522,6 +532,21 @@ mlx5_rx_queue_count(struct rte_eth_dev *dev, uint16_t rx_queue_id)
 		return -rte_errno;
 	}
 	return rx_queue_count(rxq);
+}
+
+uint32_t
+mlx5_tx_queue_count(struct rte_eth_dev *dev, uint16_t tx_queue_id)
+{
+	struct mlx5_priv *priv = dev->data->dev_private;
+	struct mlx5_rxq_data *txq;
+
+	txq = (*priv->txqs)[tx_queue_id];
+	if (!txq) {
+		rte_errno = EINVAL;
+		return -rte_errno;
+	}
+
+	return tx_queue_count(txq);
 }
 
 /**
