@@ -419,10 +419,11 @@ mlx5_tx_descriptor_status(void *tx_queue, uint16_t offset)
 static uint32_t 
 tx_queue_count(struct mlx5_txq_data *txq)
 {
-	uint32_t used;
+	uint32_t used = 0;
 
 	mlx5_tx_complete(txq);
-	used = txq->elts_head - txq->elts_tail;
+	if (txq->elts_head > txq->elts_tail)
+		used = txq->elts_head - txq->elts_tail;
 	return used;
 }
 
