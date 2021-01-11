@@ -539,7 +539,7 @@ uint32_t
 mlx5_tx_queue_count(struct rte_eth_dev *dev, uint16_t tx_queue_id)
 {
 	struct mlx5_priv *priv = dev->data->dev_private;
-	struct mlx5_rxq_data *txq;
+	struct mlx5_txq_data *txq;
 
 	txq = (*priv->txqs)[tx_queue_id];
 	if (!txq) {

@@ -2034,9 +2034,8 @@ i40e_dev_rx_descriptor_status(void *rx_queue, uint16_t offset)
 uint32_t
 i40e_dev_tx_queue_count(struct rte_eth_dev *dev, uint16_t tx_queue_id)
 {
-	volatile struct i40e_tx_desc *txdp;
 	struct i40e_tx_queue *txq;
-	uint16_t tx_next_dd, j, total = 0;
+	uint16_t j, total = 0;
 
 	txq = dev->data->tx_queues[tx_queue_id];
 
