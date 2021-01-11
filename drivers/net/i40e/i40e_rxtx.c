@@ -2037,7 +2037,7 @@ i40e_dev_tx_queue_count(struct rte_eth_dev *dev, uint16_t tx_queue_id)
 	#define I40E_RXQ_SCAN_INTERVAL 4
 	volatile struct i40e_tx_desc *txdp;
 	struct i40e_tx_queue *txq;
-	uint16_t desc = 0;
+	uint16_t desc = 4;
 
 	txq = dev->data->tx_queues[tx_queue_id];
 	txdp = &(txq->tx_ring[txq->tx_tail]);
