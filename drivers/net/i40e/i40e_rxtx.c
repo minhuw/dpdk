@@ -2034,31 +2034,20 @@ i40e_dev_rx_descriptor_status(void *rx_queue, uint16_t offset)
 uint32_t
 i40e_dev_tx_queue_count(struct rte_eth_dev *dev, uint16_t tx_queue_id)
 {
-	#define I40E_RXQ_SCAN_INTERVAL 4
 	volatile struct i40e_tx_desc *txdp;
 	struct i40e_tx_queue *txq;
-	uint16_t desc = 4;
+	uint16_t tx_next_dd, j, total = 0;
 
 	txq = dev->data->tx_queues[tx_queue_id];
-	txdp = &(txq->tx_ring[txq->tx_tail]);
 
-	while ((desc < txq->nb_tx_desc) &&
-		((txdp->cmd_type_offset_bsz &
-		rte_le_to_cpu_64(I40E_TXD_QW1_DTYPE_MASK)) ==
-		rte_le_to_cpu_64(I40E_TX_DESC_DTYPE_DESC_DONE << I40E_TXD_QW1_DTYPE_SHIFT))) {
-		/**
-		 * Check the DD bit of a rx descriptor of each 4 in a group,
-		 * to avoid checking too frequently and downgrading performance
-		 * too much.
-		 */
-		desc += I40E_RXQ_SCAN_INTERVAL;
-		txdp += I40E_RXQ_SCAN_INTERVAL;
-		if (txq->tx_tail + desc >= txq->nb_tx_desc)
-			txdp = &(txq->tx_ring[txq->tx_tail +
-					desc - txq->nb_tx_desc]);
+	for (j = 0; j < txq->nb_tx_desc; j+=32) {
+		if ((txq->tx_ring[(txq->tx_next_dd + j) % txq->nb_tx_desc].cmd_type_offset_bsz &
+			rte_cpu_to_le_64(I40E_TXD_QW1_DTYPE_MASK)) !=
+			rte_cpu_to_le_64(I40E_TX_DESC_DTYPE_DESC_DONE)) {
+				total += 32;
+		}
 	}
-
-	return txq->nb_tx_desc - desc;
+	return (uint32_t)total;
 }
 
 int
